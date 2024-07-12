@@ -1,0 +1,67 @@
+﻿@using NotaSatisSistemi.Models
+@model List<Tbl_Satislar>
+@{
+    ViewBag.Title = "Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section secBaslik{
+    <h3 class="head-h3">Notalarım Sayfası</h3>
+}
+<table class="table table-hover txt" border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                Nota
+            </th>
+            <th>
+                Satış NO
+            </th>
+            <th>
+                Nota NO
+            </th>
+            <th>
+                Satış Tarihi
+            </th>
+            <th>
+                Ücret
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @{
+                    var dir = "~/NotaImages/" + item.NotaID + ".jpg";
+                    string doc = Path.Combine(Server.MapPath(dir));
+                    if (File.Exists(doc))
+                    {
+                        <a href="@Url.Content(dir)" target="_blank" title="Notayı Tam Ekranda Görmek İçin Tıklayın"><img src="@Url.Content(dir)" width="100" /></a>
+                    }
+                    else
+                    {
+                        <span>Nota Bulunamadı</span>
+                    }
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SatisID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NotaID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SatisTarihi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ucret)
+            </td>
+            <td width="25%">
+                <p>@Html.ActionLink("Detaylar", "Details", new { id = item.NotaID }, new { @class = "aBtn" })</p>
+                <p><a class="aBtn" href="@Url.Content(dir)" target="_blank">Notayı Görüntüle</a></p>
+            </td>
+        </tr>
+    }
+
+</table>

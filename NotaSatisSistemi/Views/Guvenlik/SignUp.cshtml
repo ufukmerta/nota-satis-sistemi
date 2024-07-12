@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "SignUp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section secBaslik{
+    <h3 class="head-h3">Kayıt Ol</h3>
+}
+@{
+    if (HttpContext.Current.User.Identity.Name == "")
+    {
+        @section secStyle{
+            <link href="~/Content/Css/stylesign.css" rel="stylesheet" />
+            <link href="~/Content/Css/stylesignup.css" rel="stylesheet" />
+            <link href="//fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+        }
+        <!-- meta tags -->
+        <div class="w3l-login-form">
+            <h2>Kayıt Ol</h2>
+            @using (Html.BeginForm("SignUp", "Guvenlik", FormMethod.Post))
+            {
+                if (ViewBag.Hata != null)
+                {
+                    <div class="text-danger">
+                        <h4>@ViewBag.Hata</h4>
+                    </div>
+
+                }
+                <div class=" w3l-form-group">
+                    <label>Kullanıcı Adı:</label>
+                    <div class="group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" class="form-control" name="KullaniciAdi" placeholder="Kullanıcı Adı" required="required" />
+                    </div>
+                </div>
+                <div class=" w3l-form-group">
+                    <label>Şifre:</label>
+                    <div class="group">
+                        <i class="fas fa-unlock"></i>
+                        <input type="password" class="form-control" name="Sifre" placeholder="Şifre" required="required" />
+                    </div>
+                </div>
+                <div class=" w3l-form-group">
+                    <label>Ad:</label>
+                    <div class="group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" class="form-control" name="Ad" placeholder="Ad" required="required" />
+                    </div>
+                </div>
+                <div class=" w3l-form-group">
+                    <label>Soyad:</label>
+                    <div class="group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" class="form-control" name="Soyad" placeholder="Soyad" required="required" />
+                    </div>
+                </div>
+                <div class=" w3l-form-group">
+                    <label>Telefon:</label>
+                    <div class="group">
+                        <i class="fas fa-phone"></i>
+                        <input type="text" class="form-control" name="Telefon" placeholder="Telefon" required="required" />
+                    </div>
+                </div>
+                <div class=" w3l-form-group">
+                    <label>Eposta:</label>
+                    <div class="group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="text" class="form-control" name="Eposta" placeholder="Eposta" required="required" />
+                    </div>
+                </div>
+
+                <div class="forgot">
+                    @Html.ActionLink("Şifremi Unuttum", "ResetPassword")
+
+                </div>
+                <button type="submit">Kayıt Ol</button>
+            }
+            <p class=" w3l-register-p">Hesabın var mı? @Html.ActionLink("Giriş Yap", "Login", null, new { @class = "register" })</p>
+        </div>
+    }
+    else if (ViewBag.Hata != null)
+    {
+        <div class="text-danger">
+            <h3>@ViewBag.Hata</h3>
+        </div>
+    }
+    else
+    {
+        <h3 class="text-info">Giriş yapılmış! Farklı bir hesap açmak için ilk olarak çıkış yapmalısınız.</h3>
+    }
+}

@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Db_NotaSatisModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Tbl_Kullanicilar">
+          <Key>
+            <PropertyRef Name="KullaniciID" />
+          </Key>
+          <Property Name="KullaniciID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KullaniciAdi" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Ad" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Soyad" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Telefon" Type="varchar" MaxLength="11" Nullable="false" />
+          <Property Name="Eposta" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Sifre" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="Yetkili" Type="bit" Nullable="false" />
+          <Property Name="Kredi" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tbl_Notalar">
+          <Key>
+            <PropertyRef Name="NotaID" />
+          </Key>
+          <Property Name="NotaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NotaAd" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="EserSahibi" Type="nvarchar" MaxLength="50" />
+          <Property Name="Notalayan" Type="nvarchar" MaxLength="50" />
+          <Property Name="NotaDetay" Type="nvarchar" MaxLength="250" />
+          <Property Name="Enstruman" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Kredi" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tbl_Satislar">
+          <Key>
+            <PropertyRef Name="SatisID" />
+          </Key>
+          <Property Name="SatisID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NotaID" Type="int" Nullable="false" />
+          <Property Name="KullaniciID" Type="int" Nullable="false" />
+          <Property Name="SatisTarihi" Type="datetime" Nullable="false" />
+          <Property Name="Ucret" Type="money" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Tbl_Satislar_Tbl_Kullanicilar">
+          <End Role="Tbl_Kullanicilar" Type="Self.Tbl_Kullanicilar" Multiplicity="1" />
+          <End Role="Tbl_Satislar" Type="Self.Tbl_Satislar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Kullanicilar">
+              <PropertyRef Name="KullaniciID" />
+            </Principal>
+            <Dependent Role="Tbl_Satislar">
+              <PropertyRef Name="KullaniciID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Satislar_Tbl_Notalar">
+          <End Role="Tbl_Notalar" Type="Self.Tbl_Notalar" Multiplicity="1" />
+          <End Role="Tbl_Satislar" Type="Self.Tbl_Satislar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Notalar">
+              <PropertyRef Name="NotaID" />
+            </Principal>
+            <Dependent Role="Tbl_Satislar">
+              <PropertyRef Name="NotaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Db_NotaSatisModelStoreContainer">
+          <EntitySet Name="Tbl_Kullanicilar" EntityType="Self.Tbl_Kullanicilar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Notalar" EntityType="Self.Tbl_Notalar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Satislar" EntityType="Self.Tbl_Satislar" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Tbl_Satislar_Tbl_Kullanicilar" Association="Self.FK_Tbl_Satislar_Tbl_Kullanicilar">
+            <End Role="Tbl_Kullanicilar" EntitySet="Tbl_Kullanicilar" />
+            <End Role="Tbl_Satislar" EntitySet="Tbl_Satislar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Satislar_Tbl_Notalar" Association="Self.FK_Tbl_Satislar_Tbl_Notalar">
+            <End Role="Tbl_Notalar" EntitySet="Tbl_Notalar" />
+            <End Role="Tbl_Satislar" EntitySet="Tbl_Satislar" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Db_NotaSatisModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Tbl_Kullanicilar">
+          <Key>
+            <PropertyRef Name="KullaniciID" />
+          </Key>
+          <Property Name="KullaniciID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KullaniciAdi" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Soyad" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Telefon" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Eposta" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sifre" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Yetkili" Type="Boolean" Nullable="false" />
+          <Property Name="Kredi" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="Tbl_Satislar" Relationship="Db_NotaSatisModel.FK_Tbl_Satislar_Tbl_Kullanicilar" FromRole="Tbl_Kullanicilar" ToRole="Tbl_Satislar" />
+        </EntityType>
+        <EntityType Name="Tbl_Notalar">
+          <Key>
+            <PropertyRef Name="NotaID" />
+          </Key>
+          <Property Name="NotaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NotaAd" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EserSahibi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Notalayan" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NotaDetay" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Enstruman" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Kredi" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="Tbl_Satislar" Relationship="Db_NotaSatisModel.FK_Tbl_Satislar_Tbl_Notalar" FromRole="Tbl_Notalar" ToRole="Tbl_Satislar" />
+        </EntityType>
+        <EntityType Name="Tbl_Satislar">
+          <Key>
+            <PropertyRef Name="SatisID" />
+          </Key>
+          <Property Name="SatisID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NotaID" Type="Int32" Nullable="false" />
+          <Property Name="KullaniciID" Type="Int32" Nullable="false" />
+          <Property Name="SatisTarihi" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Ucret" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="Tbl_Kullanicilar" Relationship="Db_NotaSatisModel.FK_Tbl_Satislar_Tbl_Kullanicilar" FromRole="Tbl_Satislar" ToRole="Tbl_Kullanicilar" />
+          <NavigationProperty Name="Tbl_Notalar" Relationship="Db_NotaSatisModel.FK_Tbl_Satislar_Tbl_Notalar" FromRole="Tbl_Satislar" ToRole="Tbl_Notalar" />
+        </EntityType>
+        <EntityContainer Name="Db_NotaSatisEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Tbl_Kullanicilar" EntityType="Self.Tbl_Kullanicilar" />
+          <EntitySet Name="Tbl_Notalar" EntityType="Self.Tbl_Notalar" />
+          <EntitySet Name="Tbl_Satislar" EntityType="Self.Tbl_Satislar" />
+          <AssociationSet Name="FK_Tbl_Satislar_Tbl_Kullanicilar" Association="Db_NotaSatisModel.FK_Tbl_Satislar_Tbl_Kullanicilar">
+            <End Role="Tbl_Kullanicilar" EntitySet="Tbl_Kullanicilar" />
+            <End Role="Tbl_Satislar" EntitySet="Tbl_Satislar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Satislar_Tbl_Notalar" Association="Db_NotaSatisModel.FK_Tbl_Satislar_Tbl_Notalar">
+            <End Role="Tbl_Notalar" EntitySet="Tbl_Notalar" />
+            <End Role="Tbl_Satislar" EntitySet="Tbl_Satislar" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_Tbl_Satislar_Tbl_Kullanicilar">
+          <End Type="Db_NotaSatisModel.Tbl_Kullanicilar" Role="Tbl_Kullanicilar" Multiplicity="1" />
+          <End Type="Db_NotaSatisModel.Tbl_Satislar" Role="Tbl_Satislar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Kullanicilar">
+              <PropertyRef Name="KullaniciID" />
+            </Principal>
+            <Dependent Role="Tbl_Satislar">
+              <PropertyRef Name="KullaniciID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Satislar_Tbl_Notalar">
+          <End Type="Db_NotaSatisModel.Tbl_Notalar" Role="Tbl_Notalar" Multiplicity="1" />
+          <End Type="Db_NotaSatisModel.Tbl_Satislar" Role="Tbl_Satislar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Notalar">
+              <PropertyRef Name="NotaID" />
+            </Principal>
+            <Dependent Role="Tbl_Satislar">
+              <PropertyRef Name="NotaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Db_NotaSatisModelStoreContainer" CdmEntityContainer="Db_NotaSatisEntities">
+          <EntitySetMapping Name="Tbl_Kullanicilar">
+            <EntityTypeMapping TypeName="Db_NotaSatisModel.Tbl_Kullanicilar">
+              <MappingFragment StoreEntitySet="Tbl_Kullanicilar">
+                <ScalarProperty Name="KullaniciID" ColumnName="KullaniciID" />
+                <ScalarProperty Name="KullaniciAdi" ColumnName="KullaniciAdi" />
+                <ScalarProperty Name="Ad" ColumnName="Ad" />
+                <ScalarProperty Name="Soyad" ColumnName="Soyad" />
+                <ScalarProperty Name="Telefon" ColumnName="Telefon" />
+                <ScalarProperty Name="Eposta" ColumnName="Eposta" />
+                <ScalarProperty Name="Sifre" ColumnName="Sifre" />
+                <ScalarProperty Name="Yetkili" ColumnName="Yetkili" />
+                <ScalarProperty Name="Kredi" ColumnName="Kredi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Notalar">
+            <EntityTypeMapping TypeName="Db_NotaSatisModel.Tbl_Notalar">
+              <MappingFragment StoreEntitySet="Tbl_Notalar">
+                <ScalarProperty Name="NotaID" ColumnName="NotaID" />
+                <ScalarProperty Name="NotaAd" ColumnName="NotaAd" />
+                <ScalarProperty Name="EserSahibi" ColumnName="EserSahibi" />
+                <ScalarProperty Name="Notalayan" ColumnName="Notalayan" />
+                <ScalarProperty Name="NotaDetay" ColumnName="NotaDetay" />
+                <ScalarProperty Name="Enstruman" ColumnName="Enstruman" />
+                <ScalarProperty Name="Kredi" ColumnName="Kredi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Satislar">
+            <EntityTypeMapping TypeName="Db_NotaSatisModel.Tbl_Satislar">
+              <MappingFragment StoreEntitySet="Tbl_Satislar">
+                <ScalarProperty Name="SatisID" ColumnName="SatisID" />
+                <ScalarProperty Name="NotaID" ColumnName="NotaID" />
+                <ScalarProperty Name="KullaniciID" ColumnName="KullaniciID" />
+                <ScalarProperty Name="SatisTarihi" ColumnName="SatisTarihi" />
+                <ScalarProperty Name="Ucret" ColumnName="Ucret" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

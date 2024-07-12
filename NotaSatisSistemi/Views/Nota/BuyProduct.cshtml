@@ -1,0 +1,124 @@
+﻿@{
+    ViewBag.Title = "BuyProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section secBaslik{
+    <h3 class="head-h3">Nota Satış Sayfası</h3>
+}
+<div style="color:#000 !important;">
+    <table class="table" border="1" cellpadding="5" cellspacing="0">
+        <tr>
+            <td colspan="3" class="text-center">
+                <h5>Nota Bilgileri </h5>
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="8" width="20%">
+                @{
+                    var dir = "~/NotaImages/" + Url.RequestContext.RouteData.Values["id"] + ".jpg";
+                    if (ViewBag.Satis != null)
+                    {
+                        <img src="@Url.Content(dir)" width="300" />
+                    }
+                    else
+                    {
+                        <img class="imglist2" src="@Url.Content(dir)" width="300" onmousedown="return false"/>
+                    }
+                }
+            </td>
+        </tr>
+        <tr>
+            <td width="20%">Eser</td>
+            <td>@ViewData["Eser"]</td>
+        </tr>
+        <tr>
+            <td>Eser Sahibi</td>
+            <td>@ViewData["EserSahibi"]</td>
+        </tr>
+        <tr>
+            <td>Notalayan</td>
+            <td>@ViewData["Notalayan"]</td>
+        </tr>
+        <tr>
+            <td>Enstrüman</td>
+            <td>@ViewData["Enstruman"]</td>
+        </tr>
+        <tr>
+            <td>Kredi</td>
+            <td>@ViewData["Kredi"]</td>
+        </tr>
+    </table>
+    @{
+        if (ViewBag.Hata != null)
+        {
+            <h4 class="text-warning">@ViewBag.Hata</h4>
+        }
+    }
+    @{
+        if (ViewBag.Satis == null)
+        {
+            using (Html.BeginForm())
+            {<input type="hidden" value="@Url.RequestContext.RouteData.Values["id"]" name="NotaID" />
+                <input type="hidden" value="@HttpContext.Current.User.Identity.Name" name="KullaniciAdi" />
+                <input type="hidden" name="Kredi" value="@ViewData["Kredi"]" />
+                <table class="table" border="1" cellpadding="5" cellspacing="0">
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            <h5>Sipariş Özeti</h5>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Kullanıcı</td>
+                        <td>
+                            @HttpContext.Current.User.Identity.Name
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="40%">Kullanıcı Kredi Bakiyesi</td>
+                        <td>@ViewData["KullaniciKredi"]</td>
+                    </tr>
+
+                    @{
+                        decimal kalanBakiye = Convert.ToDecimal(ViewData["KullaniciKredi"]) - Convert.ToDecimal(ViewData["Kredi"]);
+                        <tr>
+                            <td>Satın Alım Sonrası Bakiye</td>
+                            <td>
+                                <label> @kalanBakiye</label>
+                            </td>
+
+                        </tr>
+                        if (kalanBakiye >= 0)
+                        {
+                            <tr>
+                                <td class="text-center" style=" vertical-align: middle; float: none; " colspan="2">
+                                    @using (Html.BeginForm())
+                                    {
+                                        @Html.AntiForgeryToken()
+
+                                        <div class="form-actions no-color" style="padding: 5px 5px 5px 5px;">
+                                            <input type="submit" value="Satın Al" class="aBtn" />
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td class="text-center" style=" vertical-align: middle; float: none; " colspan="2">
+                                    <span>Yetersiz kredi! Ürünü satın almak için krediye ihtiyacınız var.</span>
+                                    <p>@Html.ActionLink("Kredi Yükle", "Index", "Kredi", new { returnUrl = @"/Nota/BuyProduct/" + Url.RequestContext.RouteData.Values["id"] }, new { @class = "aBtn" })</p>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+            }
+        }
+        else
+        {
+            <h3 class="text-success">@ViewBag.Satis</h3>
+        }
+
+    }
+</div>

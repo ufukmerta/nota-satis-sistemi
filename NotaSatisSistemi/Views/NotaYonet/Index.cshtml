@@ -1,0 +1,78 @@
+﻿@model IEnumerable<NotaSatisSistemi.Models.Tbl_Notalar>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section secBaslik{
+    <h3 class="head-h3">Nota Listesi Yönetim</h3>
+}
+<p>
+    @Html.ActionLink("Yeni Kayıt", "Create", null, new { @class = "btnYeniKayit" })
+</p>
+<table class="table table-hover txt" border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th width="10%">
+                Nota
+            </th>
+            <th width="15%">
+                Eser Adı
+            </th>
+            <th width="15%">
+                Eser Sahibi
+            </th>
+            <th width="10%">
+                Notalayan
+            </th>
+            <th width="25%">
+                Detay
+            </th>
+            <th width="5%">
+                Enstrüman
+            </th>
+            <th width="5%">
+                Kredi
+            </th>
+            <th width="15%">İşlemler</th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @{
+                    var dir = "~/NotaImages/" + item.NotaID + ".jpg";
+                    <a href="@Url.Content(dir)" target="_blank" title="Notayı Tam Ekranda Görmek İçin Tıklayın"><img src="@Url.Content(dir)" width="115" /></a>
+
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NotaAd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EserSahibi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notalayan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NotaDetay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Enstruman)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Kredi)
+            </td>
+            <td>
+                <p>@Html.ActionLink("Güncelle", "Edit", new { id = item.NotaID }, new { @class = "aBtn" })</p>
+                <p>@Html.ActionLink("Detay", "Details", new { id = item.NotaID }, new { @class = "aBtn" })</p>
+                <p>@Html.ActionLink("Sil", "Delete", new { id = item.NotaID }, new { @class = "aBtn" })</p>
+                <p>@Html.ActionLink("Fotoğraf Yükle", "SaveImages", new { id = item.NotaID }, new { @class = "aBtn" })</p>
+            </td>
+        </tr>
+    }
+
+</table>
+

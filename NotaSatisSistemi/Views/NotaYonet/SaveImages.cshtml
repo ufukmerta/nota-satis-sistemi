@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "SaveImages";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section secBaslik{
+    <h3 class="head-h3">Nota Fotoğraf Yükle</h3>
+}
+@using (@Html.BeginForm("SaveImages", "NotaYonet", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.Hidden("hiddenId", Url.RequestContext.RouteData.Values["id"])
+    <p>
+        @Html.TextBox("UploadedImages", "", new { type = "File" })
+    </p>
+    <p>
+        <input type="submit" class="aBtn" value="Yükle" />
+        @Html.ActionLink("<- Nota Listesi", "Index", null, new { @class = "aBtn" })
+    </p>
+}
+@{
+    if (ViewBag.Durum != null)
+    {
+        var dir = "~/NotaImages/" + Url.RequestContext.RouteData.Values["id"] + ".jpg";
+        string veri = ViewBag.Durum;
+        if (veri.Contains("adlı fotoğraf yüklemesi başarılı."))
+        {
+            <p style="color:#000;">@ViewBag.Durum</p>
+            <p>
+                <a href="@Url.Content(dir)" target="_blank" title="Notayı Tam Ekranda Görmek İçin Tıklayın"><img src="@Url.Content(dir)" width="450" /></a>
+            </p>
+        }
+    }
+}
+
+
+

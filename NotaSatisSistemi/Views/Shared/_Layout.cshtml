@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Nota Satış Sistemi</title>
+
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <!-- Other Custom CSS -->
+    <link href="~/Content/Css/Style.css" rel="stylesheet" />
+    @RenderSection("secStyle", required: false)
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="menu">
+            <div class="menu-header">
+                <h3 class="head-h3">Nota Satış Sistemi</h3>
+            </div>
+
+            <ul class="menu-list">
+                <li>
+                    <a href="/Home/Index">
+                        <i class="fas fa-home"></i><pre> Ana Sayfa</pre>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Nota/Index">
+                        <i class="fas fa-list"></i><pre> Nota Listesi</pre>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Nota/Order">
+                        <i class="fas fa-file"></i><pre>  Notalarım</pre>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Kredi/Index">
+                        <i class="fas fa-wallet"> </i><pre> Kredi Yükle</pre>
+                    </a>
+                </li>
+                @{
+                    if (ViewBag.yetki == true)
+                    {
+                        <li>
+                            <a href="/NotaYonet/Index">
+                            <i class="fas fa-user-cog"></i>
+                                Nota Yönetim Sayfası
+                            </a>
+                        </li>
+                    }
+                    string str = HttpContext.Current.User.Identity.Name;
+                    if (str == "")
+                    {
+                        <li>
+                            <a href="/Guvenlik/Login">
+                                <i class="fas fa-sign-in-alt"></i>
+                                Giriş Yap
+                            </a>
+                        </li>
+                    }
+                }
+            </ul>
+            <div>
+                @{  string str2 = HttpContext.Current.User.Identity.Name;
+                    if (str2 != "")
+                    {
+                        <h4 class="headl"> Kullanıcı: @str2</h4>
+                        @Html.ActionLink("Çıkış Yap", "LogOut", "Guvenlik", null, new { @class = "btnLogOut" }) 
+                    } 
+                 }
+            </div>
+        </nav>
+
+        <!-- Page Content  -->
+        <div id="contents" class="text-light">
+
+            <div class="head text-light">
+                @RenderSection("secBaslik", required: false)
+            </div>
+            <div class="content">
+                @RenderBody()
+            </div>
+        </div>
+
+    </div>
+
+    <!-- jQuery CDN - Slim version (=without AJAX) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+</body>
+</html>

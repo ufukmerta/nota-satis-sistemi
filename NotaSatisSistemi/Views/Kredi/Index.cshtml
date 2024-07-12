@@ -1,0 +1,47 @@
+﻿@model NotaSatisSistemi.Models.Tbl_Kullanicilar
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section secBaslik{
+    <h3 class="head-h3">Kredi İşlemleri</h3>
+}
+<div style="color:#000 !important;">
+    <table class="table" border="1" cellpadding="5" cellspacing="0">
+        <tr>
+            <td>Kullanıcı Adı</td>
+            <td>@Html.DisplayFor(model => model.KullaniciAdi)</td>
+        </tr>
+        <tr>
+            <td>Ad Soyad</td>
+            <td>@Html.DisplayFor(model => model.Ad) @Html.DisplayFor(model => model.Soyad)</td>
+        </tr>
+        <tr>
+            <td>Bakiye</td>
+            <td>@Html.DisplayFor(model => model.Kredi) Kredi</td>
+        </tr>
+        @using (Html.BeginForm("Ekle", "Kredi", FormMethod.Post))
+        {
+            @Html.Hidden("returnUrl", ViewContext.HttpContext.Request.Url.Query)
+            <tr>
+                <td>
+                    Kredi Tutarı
+                </td>
+                <td>
+                    <input type="number" class="form-control" name="Kredi" placeholder="Eklenecek Kredi Tutarı" required="required" />
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center" colspan="2">
+                    @{
+                        if (ViewBag.durum != null)
+                        {
+                            <h4 class="text-success">@ViewBag.durum</h4>
+                        }
+                    }
+                    <button type="submit" class="aBtn">Ekle</button>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

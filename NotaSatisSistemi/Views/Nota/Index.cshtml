@@ -1,0 +1,80 @@
+﻿@model IEnumerable<NotaSatisSistemi.Models.Tbl_Notalar>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section secBaslik{
+    <h3 class="head-h3">Nota Listesi</h3>
+}
+<table class="table table-hover txt" border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th width="10%">
+                Nota Fotoğraf
+            </th>
+            <th width="20%">
+                Eser
+            </th>
+            <th width="20%">
+                Eser Sahibi
+            </th>
+            <th width="15%">
+                Notalayan
+            </th>
+            @*<th width="25%">
+                    Detay
+                </th>*@
+            <th width="10%">
+                Enstrüman
+            </th>
+            <th width="10%">
+                Kredi
+            </th>
+            <th width="15%">
+                İşlemler
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @{
+                    var dir = "~/NotaImages/" + Html.DisplayFor(modelItem => item.NotaID) + ".jpg";
+                    string doc = Path.Combine(Server.MapPath(dir));
+                    if (File.Exists(doc))
+                    {
+                        <img class="imglist" src="@Url.Content(dir)" width="95" onmousedown="return false" oncontextmenu="return false" />
+                    }
+                    else
+                    {
+                        <span>Nota Bulunamadı</span>
+                    }
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NotaAd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EserSahibi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notalayan)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.NotaDetay)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Enstruman)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Kredi)
+            </td>
+            <td>
+                @Html.ActionLink("Detay", "Details", new { id = item.NotaID }, new { @class = "aBtn" })
+                @Html.ActionLink("Satın Al", "BuyProduct", new { id = item.NotaID }, new { @class = "aBtn" })
+            </td>
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,73 @@
+﻿@model NotaSatisSistemi.Models.Tbl_Notalar
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section secBaslik{
+    <h3 class="head-h3">Nota Düzenle</h3>
+}
+<div style="color:#000 !important;">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.NotaID)
+
+        <div>
+            @Html.Label("Eser", htmlAttributes: new { @class = "control-label cfl" })
+            <div class="form-group">
+                @Html.EditorFor(model => model.NotaAd, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NotaAd, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div>
+            @Html.Label("Eser Sahibi", htmlAttributes: new { @class = "control-label cfl" })
+            <div class="form-group">
+                @Html.EditorFor(model => model.EserSahibi, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EserSahibi, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div>
+            @Html.Label("Notalayan", htmlAttributes: new { @class = "control-label cfl" })
+            <div class="form-group">
+                @Html.EditorFor(model => model.Notalayan, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Notalayan, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div>
+            @Html.Label("Detay", htmlAttributes: new { @class = "control-label cfl" })
+            <div class="form-group">
+                @Html.EditorFor(model => model.NotaDetay, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NotaDetay, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div>
+            @Html.Label("Enstrüman", htmlAttributes: new { @class = "control-label cfl" })
+            <div class="form-group">
+                @Html.EditorFor(model => model.Enstruman, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Enstruman, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div>
+            @Html.Label("Kredi", htmlAttributes: new { @class = "control-label cfl" })
+            <div class="form-group">
+                @Html.EditorFor(model => model.Kredi, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Kredi, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div>
+            <div class="col-md-12 text-center">
+                <input type="submit" value="Kaydet" class="aBtn" />
+                @Html.ActionLink("<- Nota Listesi", "Index", null, new { @class = "aBtn" })
+            </div>
+        </div>
+    }
+
+</div>

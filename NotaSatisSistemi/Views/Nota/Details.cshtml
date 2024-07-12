@@ -1,0 +1,65 @@
+﻿@model NotaSatisSistemi.Models.Tbl_Notalar
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section secBaslik{
+    <h3 class="head-h3">@Html.DisplayFor(model => model.NotaAd) Nota Bilgileri</h3>
+}
+<div style="color:#000 !important;">
+    <table class="table" border="1" cellpadding="5" cellspacing="0">
+        <tr>
+            <td rowspan="8">
+                @{
+                    var dir = "~/NotaImages/" + Html.DisplayFor(model => model.NotaID) + ".jpg";
+                    string doc = Path.Combine(Server.MapPath(dir));
+                    if (File.Exists(doc))
+                    {
+                        <img onmousedown="return false" oncontextmenu="return false" class="imglist2" src="@Url.Content(dir)" width="525" />
+                    }
+                    else
+                    {
+                        <p>Nota Bulunamadı</p>
+                    }
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>Eser</td>
+            <td>@Html.DisplayFor(model => model.NotaAd)</td>
+        </tr>
+        <tr>
+            <td>Eser Sahibi</td>
+            <td>@Html.DisplayFor(model => model.EserSahibi)</td>
+        </tr>
+        <tr>
+            <td>Notalayan</td>
+            <td>@Html.DisplayFor(model => model.Notalayan)</td>
+        </tr>
+        <tr>
+            <td>Detaylar</td>
+            <td>@Html.DisplayFor(model => model.NotaDetay)</td>
+        </tr>
+        <tr>
+            <td>Enstruman</td>
+            <td>@Html.DisplayFor(model => model.Enstruman)</td>
+        </tr>
+        <tr>
+            <td>Kredi</td>
+            <td>@Html.DisplayFor(model => model.Kredi)</td>
+        </tr>
+        <tr>
+            <td class="text-center" style=" vertical-align: middle; float: none; " colspan="2">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-actions no-color" style="padding: 5px 5px 5px 5px;">
+                        @Html.ActionLink("Satın Al", "BuyProduct", new { id = Model.NotaID }, new { @class = "aBtn" })
+                        @Html.ActionLink("Nota Listesi", "Index", null, new { @class = "aBtn" })
+                    </div>
+                }
+            </td>
+        </tr>
+    </table>
+</div>
