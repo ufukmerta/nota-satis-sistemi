@@ -106,10 +106,6 @@ namespace NotaSatisSistemi.Controllers
                 return RedirectToAction("Login", "Guvenlik");
             }
         }
-
-        // POST: NotaYonet/Create
-        // Aşırı gönderim saldırılarından korunmak için, bağlamak istediğiniz belirli özellikleri etkinleştirin, 
-        // daha fazla bilgi için bkz. https://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -165,10 +161,7 @@ namespace NotaSatisSistemi.Controllers
                 return RedirectToAction("Login", "Guvenlik");
             }
         }
-
-        // POST: NotaYonet/Edit/5
-        // Aşırı gönderim saldırılarından korunmak için, bağlamak istediğiniz belirli özellikleri etkinleştirin, 
-        // daha fazla bilgi için bkz. https://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]

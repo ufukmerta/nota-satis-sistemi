@@ -1,4 +1,5 @@
-﻿@{
+﻿@model NotaSatisSistemi.Models.Tbl_Notalar
+@{
     ViewBag.Title = "BuyProduct";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -29,23 +30,23 @@
         </tr>
         <tr>
             <td width="20%">Eser</td>
-            <td>@ViewData["Eser"]</td>
+            <td>@Model.NotaAd</td>
         </tr>
         <tr>
             <td>Eser Sahibi</td>
-            <td>@ViewData["EserSahibi"]</td>
+            <td>@Model.EserSahibi</td>
         </tr>
         <tr>
             <td>Notalayan</td>
-            <td>@ViewData["Notalayan"]</td>
+            <td>@Model.Notalayan</td>
         </tr>
         <tr>
             <td>Enstrüman</td>
-            <td>@ViewData["Enstruman"]</td>
+            <td>@Model.Enstruman</td>
         </tr>
         <tr>
             <td>Kredi</td>
-            <td>@ViewData["Kredi"]</td>
+            <td>@Model.Kredi</td>
         </tr>
     </table>
     @{
@@ -60,7 +61,7 @@
             using (Html.BeginForm())
             {<input type="hidden" value="@Url.RequestContext.RouteData.Values["id"]" name="NotaID" />
                 <input type="hidden" value="@HttpContext.Current.User.Identity.Name" name="KullaniciAdi" />
-                <input type="hidden" name="Kredi" value="@ViewData["Kredi"]" />
+                <input type="hidden" name="Kredi" value="@Model.Kredi" />
                 <table class="table" border="1" cellpadding="5" cellspacing="0">
                     <tr>
                         <td colspan="2" class="text-center">
@@ -79,7 +80,7 @@
                     </tr>
 
                     @{
-                        decimal kalanBakiye = Convert.ToDecimal(ViewData["KullaniciKredi"]) - Convert.ToDecimal(ViewData["Kredi"]);
+                        decimal kalanBakiye = Convert.ToDecimal(ViewData["KullaniciKredi"]) - Model.Kredi;
                         <tr>
                             <td>Satın Alım Sonrası Bakiye</td>
                             <td>

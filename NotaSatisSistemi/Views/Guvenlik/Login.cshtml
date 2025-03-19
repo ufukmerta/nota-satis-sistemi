@@ -33,15 +33,15 @@
                         <input type="password" class="form-control" name="Sifre" placeholder="Şifre" required="required" />
                     </div>
                 </div>
-                if (ViewBag.Hata != null)
+                if (TempData["hata"] != null)
                 {
                     <div class="text-danger">
-                        <h4>@ViewBag.Hata</h4>
+                        <h4>@TempData["hata"]</h4>
                     </div>
 
                 }
                 <div class="forgot">
-                    @Html.ActionLink("Şifremi Unuttum", "SifremiUnuttum")
+                    @Html.ActionLink("Şifremi Unuttum", "ResetPassword")
                 </div>
                 <button type="submit">Giriş Yap</button>
             }

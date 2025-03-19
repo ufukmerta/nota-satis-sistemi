@@ -1,9 +1,6 @@
 ﻿using NotaSatisSistemi.Models;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
@@ -56,7 +53,7 @@ namespace NotaSatisSistemi.Controllers
         // GET: Guvenlik
         [HttpGet]
         public ActionResult Login(string returnUrl)
-        {
+        {            
             string yetki = yetkiKontrol();
             if (yetki == "yetkili")
             {

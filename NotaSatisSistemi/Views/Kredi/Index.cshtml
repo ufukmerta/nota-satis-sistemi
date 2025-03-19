@@ -20,7 +20,7 @@
             <td>Bakiye</td>
             <td>@Html.DisplayFor(model => model.Kredi) Kredi</td>
         </tr>
-        @using (Html.BeginForm("Ekle", "Kredi", FormMethod.Post))
+        @using (Html.BeginForm("AddCredit", "Kredi", FormMethod.Post))
         {
             @Html.Hidden("returnUrl", ViewContext.HttpContext.Request.Url.Query)
             <tr>
@@ -34,9 +34,13 @@
             <tr>
                 <td class="text-center" colspan="2">
                     @{
-                        if (ViewBag.durum != null)
+                        if (TempData["statusCode"] != null)
                         {
-                            <h4 class="text-success">@ViewBag.durum</h4>
+                            string str = TempData["statusCode"].ToString();
+                            if (str == "204")
+                            {
+                                <h4 class="text-success">@TempData["durum"].ToString()</h4>
+                            }
                         }
                     }
                     <button type="submit" class="aBtn">Ekle</button>

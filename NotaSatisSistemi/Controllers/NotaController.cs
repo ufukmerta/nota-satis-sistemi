@@ -1,10 +1,6 @@
 ﻿using NotaSatisSistemi.Models;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
-using System.Data.SqlTypes;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace NotaSatisSistemi.Controllers
@@ -66,34 +62,29 @@ namespace NotaSatisSistemi.Controllers
             {
                 ViewBag.yetki = true;
             }
-            Tbl_Notalar notalar = db.Tbl_Notalar.Find(id);
-            ViewData["Eser"] = notalar.NotaAd;
-            ViewData["EserSahibi"] = notalar.EserSahibi;
-            ViewData["Notalayan"] = notalar.Notalayan;
-            ViewData["Enstruman"] = notalar.Enstruman;
-            ViewData["Kredi"] = notalar.Kredi;
+            Tbl_Notalar nota = db.Tbl_Notalar.Find(id);            
             string str = System.Web.HttpContext.Current.User.Identity.Name;
             if (str != "")
             {
-                Tbl_Kullanicilar data = db.Tbl_Kullanicilar.FirstOrDefault(x => x.KullaniciAdi == str);
-                ViewData["KullaniciKredi"] = data.Kredi;
+                Tbl_Kullanicilar kullanici = db.Tbl_Kullanicilar.FirstOrDefault(x => x.KullaniciAdi == str);
+                ViewData["KullaniciKredi"] = kullanici.Kredi;
             }
             else
                 RedirectToAction("Login", "Guvenlik");
 
-            return View();
+            return View(nota);
         }
         [Authorize]
         [HttpPost]
-        public ActionResult BuyProduct(Tbl_Satislar satis, string KullaniciAdi, decimal Kredi)
+        public ActionResult BuyProduct(int NotaID, string KullaniciAdi, decimal Kredi)
         {
             string yetki = yetkiKontrol();
             if (yetki == "yetkili")
             {
                 ViewBag.yetki = true;
             }
-            Tbl_Notalar notalar = db.Tbl_Notalar.Find(satis.NotaID);
-            if (notalar.Kredi != Kredi)
+            Tbl_Notalar nota = db.Tbl_Notalar.Find(NotaID);
+            if (nota.Kredi != Kredi)
             {
                 ViewBag.Hata = "Ürün fiyatı değiştiği için işleminiz iptal edildi. Ürün fiyatını kontrol edip sipariş verebilirsiniz.";
                 return View();
@@ -108,31 +99,28 @@ namespace NotaSatisSistemi.Controllers
                 ViewBag.Hata = "Giriş yapan kullanıcı değiştiği için işleminiz iptal edildi. Hesabı kontrol edip sipariş verebilirsiniz.";
                 return View();
             }
+            Tbl_Satislar satis = new Tbl_Satislar();
             if (KullaniciAdi == str)
             {
-                Tbl_Kullanicilar data = db.Tbl_Kullanicilar.FirstOrDefault(x => x.KullaniciAdi == str);
-                satis.KullaniciID = data.KullaniciID;
+                Tbl_Kullanicilar kullanici = db.Tbl_Kullanicilar.FirstOrDefault(x => x.KullaniciAdi == str);
+                satis.KullaniciID = kullanici.KullaniciID;
+                using (var context = new Db_NotaSatisEntities())
+                {
+                    satis.NotaID = NotaID;
+                    satis.Ucret = (decimal)context.Tbl_Notalar.Where(x => x.NotaID == NotaID).FirstOrDefault().Kredi;
+                    satis.SatisTarihi = DateTime.Now;
+                    db.Tbl_Satislar.Add(satis);
+                    db.SaveChanges();
+                }
+                using (var context = new Db_NotaSatisEntities())
+                {
+                    kullanici.Kredi = kullanici.Kredi - satis.Ucret;
+                    db.SaveChanges();
+                }
 
-            }
-            satis.Ucret = Kredi;
-            satis.SatisTarihi = DateTime.Now;
-            db.Tbl_Satislar.Add(satis);
-            db.SaveChanges();
-            string sorgu = "update Tbl_Kullanicilar Set Kredi=(Tbl_Kullanicilar.Kredi - " + Kredi + ") where KullaniciAdi='" + str + "'";
-            string sorguDuzenle = sorgu.Substring(sorgu.IndexOf("Kredi=") + 6, sorgu.IndexOf(")") - (sorgu.IndexOf("Kredi=") + 6)).Replace(",", ".");
-            sorgu = sorgu.Replace(sorgu.Substring(sorgu.IndexOf("Kredi=") + 6, sorgu.IndexOf(")") - (sorgu.IndexOf("Kredi=") + 6)), sorguDuzenle);
-            //sorgu = sorgu.Replace(",", "."); basit yapılı versiyonu
-            using (var context = new Db_NotaSatisEntities())
-            {
-                context.Database.ExecuteSqlCommand(sorgu);
-            }
+            }                        
             ViewBag.Satis = @"Satış başarılı bir şekilde tamamlanmıştır. Satın aldığınız notanıza ""Notalarım"" sayfasından erişebilirsiniz.";
-            ViewData["Eser"] = notalar.NotaAd;
-            ViewData["EserSahibi"] = notalar.EserSahibi;
-            ViewData["Notalayan"] = notalar.Notalayan;
-            ViewData["Enstruman"] = notalar.Enstruman;
-            ViewData["Kredi"] = notalar.Kredi;
-            return View();
+            return View(nota);
         }
         [Authorize]
         public ActionResult Order()
@@ -144,9 +132,9 @@ namespace NotaSatisSistemi.Controllers
             }
             string str = System.Web.HttpContext.Current.User.Identity.Name;
             int kID = 0;
-            Tbl_Kullanicilar user = db.Tbl_Kullanicilar.FirstOrDefault(x => x.KullaniciAdi == str);
-            kID = user.KullaniciID;
-            DbSqlQuery<Tbl_Satislar> orders = db.Tbl_Satislar.SqlQuery("select * from Tbl_Satislar where KullaniciID= @p0", kID);
+            Tbl_Kullanicilar kullanici = db.Tbl_Kullanicilar.FirstOrDefault(x => x.KullaniciAdi == str);
+            kID = kullanici.KullaniciID;
+            var orders = db.Tbl_Satislar.Where(x => x.KullaniciID == kID);
             return View(orders.ToList());
         }
     }
